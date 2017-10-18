@@ -18,7 +18,7 @@ public class UserController {
     @RequestMapping(value = "/add")
     @ResponseBody
     public int add(News news){
-        int user = newsMapper.insertNews(news);
-        return user;
+        int id = newsMapper.insertNews(news);
+        return id;
     }
 }
