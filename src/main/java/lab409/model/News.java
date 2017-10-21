@@ -1,5 +1,7 @@
 package lab409.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class News{
     public String getTitle() {
         return title;
@@ -163,4 +165,9 @@ public class News{
     private int caomei;
     private int midi;
     private int nanjing_senlin;
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }

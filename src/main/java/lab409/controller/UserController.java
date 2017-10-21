@@ -27,6 +27,11 @@ public class UserController {
     @Autowired
     UrlMapper urlMapper;
 
+
+    /**
+     * 收集 ulrs
+     * @return
+     */
     @RequestMapping(value = "/add")
     @ResponseBody
     public String add(){

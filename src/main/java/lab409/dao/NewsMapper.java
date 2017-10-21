@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface NewsMapper {
 
     /**
+     * 插入数据库一条数据
      * @param news
      * @return
      */

@@ -74,12 +74,6 @@ public class paserHelper {
             if(article_content.size() != 0){
                 content = article_content.get(0).text();
             }
-
-//            System.out.println(content);
-//            System.out.println(data_source);
-//            System.out.println(title);
-//            System.out.println(public_date);
-
             int type = KeyService.getIndexMap().get(url.getRefer());
             news.setUrl(url.getUrl());
             news.setTitle(title);
@@ -88,11 +82,7 @@ public class paserHelper {
             news.setDatasource(data_source);
             news.setBody(content);
             NewsService.setNewsRefer(news, type);
-            System.out.println(news.getBody());
-            System.out.println(type);
-            System.out.println(data_source);
-            System.out.println(title);
-            System.out.println(public_date);
+            System.out.println(news.toString());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -132,11 +122,6 @@ public class paserHelper {
                 sb.append(element.text());
             }
             content = sb.toString();
-            System.out.println(content);
-            System.out.println(data_source);
-            System.out.println(title);
-            System.out.println(public_date);
-
             int type = KeyService.getIndexMap().get(url.getRefer());
             news.setUrl(url.getUrl());
             news.setTitle(title);
@@ -145,6 +130,8 @@ public class paserHelper {
             news.setDatasource(data_source);
             news.setBody(content);
             NewsService.setNewsRefer(news, type);
+
+            System.out.println(news.toString());
         } catch (IOException e) {
             System.out.println("--------------------------------------error");
         }

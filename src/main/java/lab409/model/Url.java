@@ -1,5 +1,7 @@
 package lab409.model;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class Url {
     public String getUrl() {
         return url;
@@ -37,5 +39,10 @@ public class Url {
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
     }
 }
