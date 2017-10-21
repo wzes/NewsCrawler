@@ -17,6 +17,6 @@ public interface NewsMapper {
             "caomei, midi, nanjing_senlin) VALUES (#{title}, #{body}, #{publish_time}, #{writer}, #{datasource}, " +
             "#{url}, #{yangzhou_guazhou}, #{zhenjiang_changjiang}, #{beijing_guoji}, " +
             "#{shanghai_jiandan}, #{hangzhou_xihu}, #{chengdu_rebo}, #{changsha_juzhou}, " +
-            "#{zhangbei_caoyuan}, #{zhoushan_donghai}, #{caomei}, #{midi}, #{nanjing_senlin};")
+            "#{zhangbei_caoyuan}, #{zhoushan_donghai}, #{caomei}, #{midi}, #{nanjing_senlin});")
     int insertNews(News news);
 }

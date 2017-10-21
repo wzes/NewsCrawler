@@ -1,11 +1,20 @@
 package lab409.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import lab409.dao.NewsMapper;
+import lab409.dao.UrlMapper;
 import lab409.model.News;
+import lab409.model.Url;
+import lab409.service.BaiduNewsProcessor;
+import lab409.service.TodayProcessor;
+import lab409.service.UrlService;
+import lab409.service.paserHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @RestController
@@ -15,10 +24,63 @@ public class UserController {
     @Autowired
     NewsMapper newsMapper;
 
+    @Autowired
+    UrlMapper urlMapper;
+
     @RequestMapping(value = "/add")
     @ResponseBody
-    public int add(News news){
-        int id = newsMapper.insertNews(news);
-        return id;
+    public String add(){
+        Long start = System.currentTimeMillis();
+
+        //　今日头条
+        List<Url> todayUrlsList = TodayProcessor.getUrlsList();
+        for (Url url : todayUrlsList){
+            try{
+                urlMapper.insertUrl(url);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        //百度新闻
+        List<Url> baiduUrlsList = BaiduNewsProcessor.getUrlsList();
+        for (Url url : baiduUrlsList){
+            try{
+                urlMapper.insertUrl(url);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        Long end = System.currentTimeMillis();
+        Long time = (end - start) / 1000 ;
+        return String.valueOf(time);
     }
+
+    @RequestMapping(value = "/urls")
+    @ResponseBody
+    public String getTodayUrls(){
+        List<Url> urlsList = urlMapper.getUrls();
+        return JSONArray.toJSON(urlsList).toString();
+    }
+
+    @RequestMapping(value = "/news")
+    @ResponseBody
+    public String addNews(){
+        Long start = System.currentTimeMillis();
+        List<Url> urls = UrlService.getUrls();
+        for (Url url : urls){
+            News news = paserHelper.paser(url);
+            if(news != null && news.getTitle() != null){
+                try{
+                    newsMapper.insertNews(news);
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        Long end = System.currentTimeMillis();
+        Long time = (end - start) / 1000 ;
+        return String.valueOf(time);
+    }
+
 }
