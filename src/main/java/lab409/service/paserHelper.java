@@ -18,6 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class paserHelper {
+
+    // 解析
     public static News paser(Url url){
         News news = null;
         if(url.getSource().equals("百度新闻")){
@@ -43,22 +45,21 @@ public class paserHelper {
         Document doc = null;
         News news = new News();
 
+        //　模拟浏览器才可获取正确内容
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
-        //webClient.getOptions().setJavaScriptEnabled(true);
+        webClient.getOptions().setJavaScriptEnabled(true);
         webClient.getOptions().setCssEnabled(false);
-        //webClient.setAjaxController(new NicelyResynchronizingAjaxController());
-        webClient.getOptions().setTimeout(35000);
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+        webClient.getOptions().setTimeout(10000);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
         webClient.addRequestHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3192.0 Safari/537.36");
-        //webClient.waitForBackgroundJavaScript(20000);
+        webClient.waitForBackgroundJavaScript(20000);
 
 
         try {
             HtmlPage page = webClient.getPage(url.getUrl());
             doc = Jsoup.parse(page.asXml());
-
             //System.out.println(doc.html());
-
             Elements article_title = doc.getElementsByClass("article-title");
             if(article_title.size() != 0){
                 title = article_title.get(0).text();
@@ -153,6 +154,11 @@ public class paserHelper {
         return proxyConfig;
     }
 
+    /**
+     * 正则获取日期
+     * @param text
+     * @return
+     */
     public static String getDate(String text) {
         Pattern pattern = Pattern.compile("([0-9]{4}[/][0-9]{1,2}[/][0-9]{1,2}[ ][0-9]{1,2}[:][0-9]{1,2}[:][0-9]{1,2})|" +
                 "([0-9]{4}[年][0-9]{1,2}[月][0-9]{1,2}[日 ][0-9]{1,2}[:][0-9]{1,2}[:][0-9]{1,2})|" +

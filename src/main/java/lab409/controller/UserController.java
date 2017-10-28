@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @RestController
@@ -73,16 +75,38 @@ public class UserController {
     public String addNews(){
         Long start = System.currentTimeMillis();
         List<Url> urls = UrlService.getUrls();
+        System.out.println("-----------------------------------------------------------------------------" + urls.size());
+        int nThreds = 20;
+        ExecutorService executor = Executors.newFixedThreadPool(nThreds);
         for (Url url : urls){
-            News news = paserHelper.paser(url);
-            if(news != null && news.getTitle() != null){
-                try{
-                    newsMapper.insertNews(news);
-                }catch (Exception e){
-                    System.out.println(e.getMessage());
+            executor.execute(() -> {
+                News news = paserHelper.paser(url);
+                if(news != null && news.getTitle() != null){
+                    try{
+                        newsMapper.insertNews(news);
+                        System.out.println("------------------------------------------------------" +
+                                "-----------------------" + urls.indexOf(url));
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
                 }
-            }
+            });
         }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
+//        for (Url url : urls){
+//            News news = paserHelper.paser(url);
+//            if(news != null && news.getTitle() != null){
+//                try{
+//                    newsMapper.insertNews(news);
+//                    System.out.println("------------------------------------------------------" +
+//                            "-----------------------" + urls.indexOf(url));
+//                }catch (Exception e){
+//                    System.out.println(e.getMessage());
+//                }
+//            }
+//        }
         Long end = System.currentTimeMillis();
         Long time = (end - start) / 1000 ;
         return String.valueOf(time);

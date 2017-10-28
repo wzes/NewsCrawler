@@ -3,11 +3,7 @@ package lab409.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 
- *@author  venbillyu 
- *@date 创建时间：2016年12月14日 上午10:23:13 
- *@describle 
- */
+
 public class ProxyUtil {
 	private static List<String> proxyIpList;
 	static{

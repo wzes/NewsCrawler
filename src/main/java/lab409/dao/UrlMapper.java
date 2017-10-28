@@ -21,5 +21,4 @@ public interface UrlMapper {
     @Select("select url, refer, source, writer from raw_url")
     List<Url> getUrls();
 
-
 }
